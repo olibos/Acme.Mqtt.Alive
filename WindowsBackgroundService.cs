@@ -1,5 +1,7 @@
 namespace Acme.Mqtt.Alive;
 
+using System.Runtime.InteropServices;
+
 using Microsoft.Extensions.Options;
 
 using MQTTnet;
@@ -33,8 +35,31 @@ public sealed class WindowsBackgroundService : BackgroundService
         using var mqttClient = new MqttFactory().CreateManagedMqttClient();
         mqttClient.ConnectedHandler = new MqttClientConnectedHandlerDelegate(e => mqttClient.PublishAsync(onlineMesage));
         await mqttClient.StartAsync(options);
+        if (!string.IsNullOrEmpty(mqtt.ActionTopic))
+        {
+            await mqttClient.SubscribeAsync(mqtt.ActionTopic);
+            mqttClient.UseApplicationMessageReceivedHandler(e =>
+            {
+                switch (e.ApplicationMessage.ConvertPayloadToString())
+                {
+                    case "sleep":
+                        this.logger.LogWarning("MQTT request for sleep");
+                        SetSuspendState(hibernate: false, forceCritical: true, disableWakeEvent: true);
+                        break;
+
+                    case "hybernate":
+                        this.logger.LogWarning("MQTT request for hybernate");
+                        SetSuspendState(hibernate: true, forceCritical: true, disableWakeEvent: true);
+                        break;
+                }
+            });
+        }
+
         stoppingToken.WaitHandle.WaitOne();
         await mqttClient.PublishAsync(offlineMessage);
         await mqttClient.StopAsync();
     }
+
+    [DllImport("Powrprof.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+    private static extern bool SetSuspendState(bool hibernate, bool forceCritical, bool disableWakeEvent);
 }

@@ -1,6 +1,7 @@
 using Acme.Mqtt.Alive;
 
 IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration(app => app.AddJsonFile("secrets.json", optional: true, reloadOnChange: true))
     .UseWindowsService(options =>
     {
         options.ServiceName = "MQTT Alive";

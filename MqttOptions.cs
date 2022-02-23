@@ -1,9 +1,10 @@
 ﻿namespace Acme.Mqtt.Alive;
-
-public class MqttOptions
+#nullable disable warnings
+public record MqttOptions(string Host, string UserName, string Password, string Topic, string? ActionTopic)
 {
-    public string Host { get; set; }
-    public string Password { get; set; }
-    public string Topic { get; set; }
-    public string UserName { get; set; }
+    public MqttOptions()
+        : this(default, default, default, default, default)
+    { 
+    }
 }
+#nullable restore warnings
