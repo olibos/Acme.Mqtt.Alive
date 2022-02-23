@@ -47,7 +47,7 @@ public sealed class WindowsBackgroundService : BackgroundService
                         SetSuspendState(hibernate: false, forceCritical: true, disableWakeEvent: true);
                         break;
 
-                    case "hybernate":
+                    case "hibernate":
                         this.logger.LogWarning("MQTT request for hybernate");
                         SetSuspendState(hibernate: true, forceCritical: true, disableWakeEvent: true);
                         break;

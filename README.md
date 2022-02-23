@@ -1,9 +1,9 @@
 ﻿# Acme.Mqtt.Alive
 ## Why ?
-To simplify device tracking in Home Automation and of course for **fun**!
+To simplify device tracking in Home Automation and, of course, for **fun**!
 
 ## How ?
-This tool will be installed as a Windows Service and simply set a MQTT topic to online when connected to home network and to offline when the device is shutted down but also when it's not available: network issue, sleep, hybernate, ...
+This tool will be installed as a Windows Service and simply set a MQTT topic to online when connected to home network and to offline when the device is shut down but also when it's not available: network issues, sleep, hibernate, ...
 
 ## Setup
 Edit the appsettings.json and complete the MQTT section.
@@ -44,8 +44,8 @@ device_tracker:
 ```
 
 ## Bonus
-If you set ActionTopic variable in appsettings.json
-You can remotly bring the targetted machine to sleep / hybernate.
+If you set ActionTopic variable in appsettings.json 
+You can remotely bring the targeted machine to sleep / hibernate.
 
 ## Enjoy 🤖❗
-Be creative with your automations...
+Be creative with your automation...
